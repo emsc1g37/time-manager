@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/emsc1g37/nodeJsAPI#readme",
   "dependencies": {
-    "caminte": "^0.4.1",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "pg": "^7.12.1"
   }
 }

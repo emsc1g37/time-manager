@@ -1,12 +1,12 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-
+const postgres = require('./db/config');
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static("public"));
 ////////DATABASE///////
-
+postgres.pgConnect();
 //////////////////////s
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
@@ -20,5 +20,5 @@ app.use("/api", require("./routes/api"));
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
-  console.log("Comma platform listening on port " + port); // eslint-disable-line
+  console.log("platform listening on port " + port); // eslint-disable-line
 });

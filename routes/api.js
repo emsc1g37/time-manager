@@ -6,29 +6,19 @@ router.get("/", (req, res) => {
   });
 });
 
-const employees = require("./employeesController");
+const userController = require("./usersController");
 
 router
-  .route("/employees/")
-//   .post(employees.createOne)
-  .get(employees.list);
-router
-  .route("/employees/:id")
-  .get(employees.readOne)
-//   .put(employees.updateOne)
-//   .delete(employees.deeteOne);
-
-const managers = require("./managersController");
+  .route('/users')
+  .get(userController.getAllUsers)
+  //    .get(userController.getUserByEmailAndUsername)
+  .post(userController.createUser);
 
 router
-  .route("/managers/")
-//   .post(managers.create)
-  .get(managers.list);
-router
-  .route("/managers/:id")
-  .get(managers.readOne)
-//   .put(managers.updateOne)
-//   .delete(managers.deleteOne);
+  .route('/users/:userId')
+  .get(userController.getUserById)
+  .put(userController.updateUser)
+  .delete(userController.deleteUser);
 
 
 module.exports = router;
