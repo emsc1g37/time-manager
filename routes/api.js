@@ -10,10 +10,11 @@ const userController = require("./usersController");
 
 router
   .route('/users')
-  .get(userController.getAllUsers)
-  //    .get(userController.getUserByEmailAndUsername)
+  .get(userController.getUserByEmailAndUsername)
   .post(userController.createUser);
-
+router
+  .route('/users/all')
+  .get(userController.getAllUsers)
 router
   .route('/users/:userId')
   .get(userController.getUserById)
