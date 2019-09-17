@@ -46,3 +46,10 @@ create table if not exists work_periods (
   foreign key (team_id) references teams(id) on delete cascade,
   foreign key (user_id) references users(id) on delete cascade
 );
+
+insert into roles (label) values
+('Employee'),
+('Manager'),
+('Administrator');
+create extension pgcrypto;
+insert into users (email, password, first_name, last_name, role_id) values ('admin@admin.com', crypt('admin', gen_salt('bf')), 'John', 'Doe', 3);
