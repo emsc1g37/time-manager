@@ -1,42 +1,87 @@
-const userService = require('../services/usersService');
+const userService = require("../services/usersService");
 
 async function getAllUsers(req, res) {
-    let promise = await userService.getAllUsers();
-    console.log('USERS: ' + promise);
-    res.json({ status: 'OK', user: promise.foundUser });
+  const resultsFromService = await userService.getAllUsers();
+  console.log(resultsFromService);
+
+  console.log(resultsFromService.status);
+  if (resultsFromService.error) {
+    res.status(resultsFromService.status);
+    res.json(resultsFromService).end();
+  } else {
+    res.json(resultsFromService.data);
+    res.status(resultsFromService.status).end();
+  }
 }
 
 async function getUserByEmailAndUsername(req, res) {
-    let promise = await userService.getUserByEmailAndUsername(req.query.email, req.query.username);
-    res.json({ status: 'OK', user: promise.foundUser });
+  if (req.query.email && req.query.username) {
+    const resultsFromService = await userService.getUserByEmailAndUsername(
+      req.query.email,
+      req.query.username
+    );
+    if (resultsFromService.error) {
+      res.status(resultsFromService.status);
+      res.json(resultsFromService).end();
+    }
+    res.status(resultsFromService.status);
+    res.json(resultsFromService.data).end();
+  }
+  res.status(400);
+  res.json("Arguments missing").end();
 }
 
 async function getUserById(req, res) {
-    let promise = await userService.getUserById(req.params.userId);
-    res.json({ status: 'OK', user: promise.foundUser });
+  const resultsFromService = await userService.getUserById(req.params.userId);
+  if (resultsFromService.status === 500) {
+    res.status(resultsFromService.status);
+    res.json(resultsFromService).end();
+  }
+  res.status(resultsFromService.status);
+  res.json(resultsFromService.data).end();
 }
 
 async function createUser(req, res) {
-    let promise = await userService.createUser(req.body.email, req.body.username);
-    console.log(promise)
-    res.json({ status: 'OK', user: promise });
+  const resultsFromService = await userService.createUser(
+    req.body.email,
+    req.body.username
+  );
+  if (resultsFromService.error) {
+    res.status(resultsFromService.status);
+    res.json(resultsFromService).end();
+  }
+  res.status(resultsFromService.status);
+  res.json(resultsFromService.data).end();
 }
 
 async function updateUser(req, res) {
-    let promise = await userService.updateUser(req.body.email, req.body.username);
-    res.json({ status: 'OK', user: promise.updatedUser });
+  const resultsFromService = await userService.updateUser(
+    req.body.email,
+    req.body.username
+  );
+  if (resultsFromService.error) {
+    res.status(resultsFromService.status);
+    res.json(resultsFromService).end();
+  }
+  res.status(resultsFromService.status);
+  res.json(resultsFromService.data).end();
 }
 
 async function deleteUser(req, res) {
-    let promise = await userService.deleteUser(req.params.userId);
-    res.json({ status: 'OK', user: promise.deletedUser });
+  const resultsFromService = await userService.deleteUser(req.params.userId);
+  if (resultsFromService.error) {
+    res.status(resultsFromService.status);
+    res.json(resultsFromService).end();
+  }
+  res.status(resultsFromService.status);
+  res.json(resultsFromService.data).end();
 }
 
 module.exports = {
-    createUser,
-    updateUser,
-    deleteUser,
-    getUserById,
-    getAllUsers,
-    getUserByEmailAndUsername
+  createUser,
+  updateUser,
+  deleteUser,
+  getUserById,
+  getAllUsers,
+  getUserByEmailAndUsername
 };
