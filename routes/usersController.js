@@ -71,6 +71,11 @@ async function updateUser(req, res) {
   res.json(resultsFromService.data).end();
 }
 
+async function promoteEmployee(req, res) {
+  const result = userService.promoteEmployee(req.params.id);
+  res.status((result.success) ? 200 : 500).end()
+}
+
 async function deleteUser(req, res) {
   const resultsFromService = await userService.deleteUser(req.params.userId);
   if (resultsFromService.error) {

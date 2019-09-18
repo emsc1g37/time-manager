@@ -40,6 +40,10 @@ function getAllRoles() {
   return shared.execute('SELECT * FROM roles');
 }
 
+function promoteEmployee(id) {
+  return shared.execute('UPDATE users SET (role_id = 2) WHERE id = $1', [id]);
+}
+
 module.exports = {
   createUser,
   updateUser,
@@ -47,5 +51,6 @@ module.exports = {
   getUserById,
   getAllUsers,
   getUserByEmailAndUsername,
-  getAllRoles
+  getAllRoles,
+  promoteEmployee
 };
