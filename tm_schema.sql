@@ -10,6 +10,7 @@ create table if not exists users (
   first_name varchar(50) not null,
   last_name varchar(50) not null,
   role_id smallint not null,
+  unique (email),
   foreign key (role_id) references roles(id)
 );
 
