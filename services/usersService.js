@@ -1,18 +1,19 @@
-const db = require("../db/config");
 const shared = require("./shared");
 
 function getUserById(userId) {
-  return shared.execute("SELECT * FROM users WHERE id = $1", [userId]);
+  return shared.execute("SELECT u.id, u.email, u.first_name, u.last_name, u.role_id r.label role_label FROM users u INNER JOIN roles r ON (u.role_id = r.id) WHERE id = $1", [userId]);
 }
 
 function getAllUsers() {
-  return shared.execute("SELECT * FROM userss", []);
+  return shared.execute("SELECT u.id, u.email, u.first_name, u.last_name, u.role_id r.label role_label FROM userss u INNER JOIN roles r ON (u.role_id = roles.id)", []);
 }
 
 function createUser(email, username) {
-  return shared.execute("INSERT INTO users (email, username) VALUES ($1, $2)", [
+  return shared.execute("INSERT INTO users (email, password, first_name, last_name, role_id) VALUES ($1, $2, $3, $4, 1)", [
     email,
-    username
+    password,
+    first_name,
+    last_name
   ]);
 }
 
@@ -29,10 +30,14 @@ function deleteUser(userId) {
 
 function getUserByEmailAndUsername(email, username) {
   return shared.execute(
-    "SELECT * FROM users WHERE email LIKE LOWER($1) " +
+    "SELECT u.id, u.email, u.first_name, u.last_name, u.role_id, r.label role_label FROM users u INNER JOIN roles r ON (u.role_id = r.id) WHERE email LIKE LOWER($1) " +
       "AND username LIKE LOWER($2)",
     [email, username]
   );
+}
+
+function getAllRoles() {
+  return shared.execute('SELECT * FROM roles');
 }
 
 module.exports = {
@@ -41,5 +46,6 @@ module.exports = {
   deleteUser,
   getUserById,
   getAllUsers,
-  getUserByEmailAndUsername
+  getUserByEmailAndUsername,
+  getAllRoles
 };

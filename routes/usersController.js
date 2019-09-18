@@ -14,6 +14,10 @@ async function getAllUsers(req, res) {
   }
 }
 
+async function getAllRoles(req, res) {
+	res.json(await userService.getAllRoles()).end();
+}
+
 async function getUserByEmailAndUsername(req, res) {
   if (req.query.email && req.query.username) {
     const resultsFromService = await userService.getUserByEmailAndUsername(
