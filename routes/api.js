@@ -20,6 +20,7 @@ router
   .get(userController.getUserById)
   .put(userController.updateUser)
   .delete(userController.deleteUser);
+router.put('/users/:id/promote', userController.promoteEmployee);
 router.get('/roles', userController.getAllRoles);
 
 const teamsController = require('./teamsController');

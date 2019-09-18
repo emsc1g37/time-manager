@@ -15,7 +15,7 @@ async function getAllUsers(req, res) {
 }
 
 async function getAllRoles(req, res) {
-	res.json(await userService.getAllRoles()).end();
+  res.json(await userService.getAllRoles()).end();
 }
 
 async function getUserByEmailAndUsername(req, res) {
@@ -72,8 +72,16 @@ async function updateUser(req, res) {
 }
 
 async function promoteEmployee(req, res) {
-  const result = userService.promoteEmployee(req.params.id);
-  res.status((result.success) ? 200 : 500).end()
+  const result = await userService.getUserById(req.params.id);
+  if (!result.success) {
+    res.status(500).json({error: result.error}).end()
+  }
+  else if (result.data.role_id != 1)
+    res.status(403).end()
+  else {
+    const result = await userService.promoteEmployee(req.params.id);
+    res.status((result.success) ? 200 : 500).end()
+  }
 }
 
 async function deleteUser(req, res) {
@@ -92,5 +100,6 @@ module.exports = {
   deleteUser,
   getUserById,
   getAllUsers,
-  getUserByEmailAndUsername
+  getUserByEmailAndUsername,
+  promoteUser
 };
