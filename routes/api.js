@@ -7,19 +7,16 @@ router.get("/", (req, res) => {
 });
 
 const userController = require("./usersController");
-
+router.route("/users/login").post(userController.login);
 router
-  .route('/users')
+  .route("/users")
   .get(userController.getUserByEmailAndUsername)
   .post(userController.createUser);
+router.route("/users/all").get(userController.getAllUsers);
 router
-  .route('/users/all')
-  .get(userController.getAllUsers)
-router
-  .route('/users/:userId')
+  .route("/users/:userId")
   .get(userController.getUserById)
   .put(userController.updateUser)
   .delete(userController.deleteUser);
-
 
 module.exports = router;

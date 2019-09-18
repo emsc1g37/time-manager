@@ -44,7 +44,8 @@ async function getUserById(req, res) {
 async function createUser(req, res) {
   const resultsFromService = await userService.createUser(
     req.body.email,
-    req.body.username
+    req.body.username,
+    req.body.password
   );
   if (resultsFromService.error) {
     res.status(resultsFromService.status);
@@ -77,11 +78,27 @@ async function deleteUser(req, res) {
   res.json(resultsFromService.data).end();
 }
 
+async function login(req, res) {
+  console.log("login");
+  const resultsFromService = await userService.login(
+    req.body.email,
+    req.body.password
+  );
+  console.log(resultsFromService);
+  if (resultsFromService.data) {
+    res.status(200);
+    res.json(resultsFromService).end();
+  }
+  res.status(401);
+  res.json(resultsFromService).end();
+}
+
 module.exports = {
   createUser,
   updateUser,
   deleteUser,
   getUserById,
   getAllUsers,
-  getUserByEmailAndUsername
+  getUserByEmailAndUsername,
+  login
 };

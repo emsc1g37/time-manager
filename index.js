@@ -1,16 +1,29 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const postgres = require('./db/config');
+const postgres = require("./db/config");
+const expressJwt = require("express-jwt");
+const pathToRegexp = require("path-to-regexp");
+
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static("public"));
+////////SECU///////////
+const unprotected = [pathToRegexp("/api/users/login")];
+const secret = "secretImSecret";
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(express.static("public"));
+app.use(expressJwt({ secret }).unless({ path: unprotected }));
 ////////DATABASE///////
 postgres.pgConnect();
 //////////////////////s
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
   res.header("Access-Control-Allow-Methods", "DELETE, PUT, GET, POST, OPTION");
   next();
 });
