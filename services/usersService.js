@@ -1,4 +1,3 @@
-const db = require("../db/config");
 const shared = require("./shared");
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -9,7 +8,10 @@ const secret = "secretImSecret";
 const maxAge = "1209600s"; // 14 days in seconds
 
 function getUserById(userId) {
-  return shared.execute("SELECT * FROM users WHERE id = $1", [userId]);
+  return shared.execute(
+    "SELECT u.id, u.email, u.first_name, u.last_name, u.role_id r.label role_label FROM users u INNER JOIN roles r ON (u.role_id = r.id) WHERE id = $1",
+    [userId]
+  );
 }
 
 function getAllUsers() {
@@ -37,7 +39,7 @@ function deleteUser(userId) {
 
 function getUserByEmailAndUsername(email, username) {
   return shared.execute(
-    "SELECT * FROM users WHERE email LIKE LOWER($1) " +
+    "SELECT u.id, u.email, u.first_name, u.last_name, u.role_id, r.label role_label FROM users u INNER JOIN roles r ON (u.role_id = r.id) WHERE email LIKE LOWER($1) " +
       "AND username LIKE LOWER($2)",
     [email, username]
   );
@@ -61,6 +63,13 @@ async function login(email, password) {
   user.data[0].token = token;
   return user;
 }
+function getAllRoles() {
+  return shared.execute("SELECT * FROM roles");
+}
+
+function promoteEmployee(id) {
+  return shared.execute("UPDATE users SET (role_id = 2) WHERE id = $1", [id]);
+}
 
 module.exports = {
   createUser,
@@ -69,5 +78,7 @@ module.exports = {
   getUserById,
   getAllUsers,
   getUserByEmailAndUsername,
-  login
+  login,
+  getAllRoles,
+  promoteEmployee
 };

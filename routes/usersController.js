@@ -14,6 +14,10 @@ async function getAllUsers(req, res) {
   }
 }
 
+// async function getAllRoles(req, res) {
+//   res.json(await userService.getAllRoles()).end();
+// }
+
 async function getUserByEmailAndUsername(req, res) {
   if (req.query.email && req.query.username) {
     const resultsFromService = await userService.getUserByEmailAndUsername(
@@ -68,6 +72,20 @@ async function updateUser(req, res) {
   res.json(resultsFromService.data).end();
 }
 
+async function promoteUser(req, res) {
+  const result = await userService.getUserById(req.params.id);
+  if (!result.success) {
+    res
+      .status(500)
+      .json({ error: result.error })
+      .end();
+  } else if (result.data.role_id != 1) res.status(400).end();
+  else {
+    const result = await userService.promoteEmployee(req.params.id);
+    res.status(result.success ? 200 : 500).end();
+  }
+}
+
 async function deleteUser(req, res) {
   const resultsFromService = await userService.deleteUser(req.params.userId);
   if (resultsFromService.error) {
@@ -100,5 +118,6 @@ module.exports = {
   getUserById,
   getAllUsers,
   getUserByEmailAndUsername,
-  login
+  login,
+  promoteUser
 };
