@@ -77,7 +77,7 @@ async function promoteEmployee(req, res) {
     res.status(500).json({error: result.error}).end()
   }
   else if (result.data.role_id != 1)
-    res.status(403).end()
+    res.status(400).end()
   else {
     const result = await userService.promoteEmployee(req.params.id);
     res.status((result.success) ? 200 : 500).end()
