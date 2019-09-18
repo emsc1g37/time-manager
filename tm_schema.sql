@@ -43,8 +43,8 @@ create table if not exists work_periods (
   arrival timestamp not null,
   departure timestamp not null,
   primary key (team_id, user_id, arrival, departure),
-  foreign key (team_id) references teams(id) on delete cascade,
-  foreign key (user_id) references users(id) on delete cascade
+  foreign key (team_id) references member_of(team_id) on delete cascade,
+  foreign key (user_id) references member_of(user_id) on delete cascade
 );
 
 insert into roles (label) values
