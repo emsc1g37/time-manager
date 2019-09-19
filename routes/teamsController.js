@@ -6,7 +6,7 @@ async function addEmployee(req, res) {
     if (result.error)
       res.status(500).json(result).end();
     else
-      res.status(200)end();
+      res.status(200).end();
   }
 }
 
