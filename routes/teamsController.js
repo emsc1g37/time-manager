@@ -23,7 +23,7 @@ async function create(req, res) {
 }
 
 async function deleteTeam(req, res) {
-  if (await ensureOwnership(req, res))
+  if (await ensureOwnership(req, res)) {
     const result = await teamsService.deleteTeam(req.params.id);
     if (result.error)
       res.status(500).json(result).end();
