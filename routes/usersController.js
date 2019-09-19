@@ -14,6 +14,14 @@ async function getAllUsers(req, res) {
   }
 }
 
+async function getAllRoles(req, res) {
+  const result = await userService.getAllRoles();
+  if (result.data)
+    res.json(result.data).end();
+  else
+    res.status(500).json(result).end();
+}
+
 async function getUserByEmailAndUsername(req, res) {
   if (req.query.email && req.query.username) {
     const resultsFromService = await userService.getUserByEmailAndUsername(
@@ -44,7 +52,8 @@ async function getUserById(req, res) {
 async function createUser(req, res) {
   const resultsFromService = await userService.createUser(
     req.body.email,
-    req.body.username
+    req.body.username,
+    req.body.password
   );
   if (resultsFromService.error) {
     res.status(resultsFromService.status);
@@ -67,6 +76,20 @@ async function updateUser(req, res) {
   res.json(resultsFromService.data).end();
 }
 
+async function promoteUser(req, res) {
+  const result = await userService.getUserById(req.params.id);
+  if (!result.success) {
+    res
+      .status(500)
+      .json({ error: result.error })
+      .end();
+  } else if (result.data.role_id != 1) res.status(400).end();
+  else {
+    const result = await userService.promoteEmployee(req.params.id);
+    res.status(result.success ? 200 : 500).end();
+  }
+}
+
 async function deleteUser(req, res) {
   const resultsFromService = await userService.deleteUser(req.params.userId);
   if (resultsFromService.error) {
@@ -77,11 +100,29 @@ async function deleteUser(req, res) {
   res.json(resultsFromService.data).end();
 }
 
+async function login(req, res) {
+  console.log("login");
+  const resultsFromService = await userService.login(
+    req.body.email,
+    req.body.password
+  );
+  console.log(resultsFromService);
+  if (resultsFromService.error) {
+    res.status(400);
+    res.json(resultsFromService).end();
+  }
+  res.status(200);
+  res.json(resultsFromService).end();
+}
+
 module.exports = {
   createUser,
   updateUser,
   deleteUser,
   getUserById,
   getAllUsers,
-  getUserByEmailAndUsername
+  getAllRoles,
+  getUserByEmailAndUsername,
+  login,
+  promoteUser
 };
