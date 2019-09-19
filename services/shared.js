@@ -9,9 +9,9 @@ function execute(sql, params) {
     db.query(query, "", (err, results) => {
       if (err) {
         console.error(err.stack);
-        reject({ status: 500, success: false, error: err });
+        reject({ error: err });
       } else {
-        resolve({ status: 200, success: true, data: results.rows });
+        resolve({ data: results.rows });
       }
     });
   }).catch(error => {

@@ -15,7 +15,11 @@ async function getAllUsers(req, res) {
 }
 
 async function getAllRoles(req, res) {
-  res.json(await userService.getAllRoles()).end();
+  const result = await userService.getAllRoles();
+  if (result.data)
+    res.json(result.data).end();
+  else
+    res.status(500).json(result).end();
 }
 
 async function getUserByEmailAndUsername(req, res) {
@@ -117,6 +121,7 @@ module.exports = {
   deleteUser,
   getUserById,
   getAllUsers,
+  getAllRoles,
   getUserByEmailAndUsername,
   login,
   promoteUser
