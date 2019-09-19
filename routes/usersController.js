@@ -14,9 +14,9 @@ async function getAllUsers(req, res) {
   }
 }
 
-// async function getAllRoles(req, res) {
-//   res.json(await userService.getAllRoles()).end();
-// }
+async function getAllRoles(req, res) {
+  res.json(await userService.getAllRoles()).end();
+}
 
 async function getUserByEmailAndUsername(req, res) {
   if (req.query.email && req.query.username) {
@@ -103,11 +103,11 @@ async function login(req, res) {
     req.body.password
   );
   console.log(resultsFromService);
-  if (resultsFromService.data) {
-    res.status(200);
+  if (resultsFromService.error) {
+    res.status(400);
     res.json(resultsFromService).end();
   }
-  res.status(401);
+  res.status(200);
   res.json(resultsFromService).end();
 }
 

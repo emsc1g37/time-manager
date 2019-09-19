@@ -47,22 +47,18 @@ function getUserByEmailAndUsername(email, username) {
 
 async function login(email, password) {
   const user = await shared.execute(
-    "SELECT * FROM users WHERE email LIKE LOWER ($1) ",
-    [email]
+    "SELECT u.id, u.email, u.first_name, u.last_name, u.role_id, r.label role_label FROM users u INNER JOIN roles r ON (u.role_id = r.id) WHERE email LIKE LOWER ($1) AND password = CRYPT($2, password)",
+    [email, password]
   );
-  const hash = user.data[0].password;
-  const passwordFromPlatform = password;
-  const compareResult = await bcryptjs.compare(passwordFromPlatform, hash);
-  if (compareResult === false) {
-    return "No Match";
-  }
-  const token = jwt.sign({ user: email }, secret, {
+  if (user.data == null)
+    return {eror: "No Match"};
+  const token = jwt.sign({ email: email, id: user.data[0].id, role: user.data[0].role_id }, secret, {
     expiresIn: maxAge
   });
-  user.data[0].password = undefined;
   user.data[0].token = token;
-  return user;
+  return user.data[0];
 }
+
 function getAllRoles() {
   return shared.execute("SELECT * FROM roles");
 }
