@@ -12,13 +12,18 @@ async function addEmployee(req, res) {
 
 async function create(req, res) {
   if (req.user.role != 2)
-    res.status(403).end();
+    res.status(403).json({error: "Only managers can create teams."}).end();
   else {
-    const result = await teamsService.create(req.body.name, req.body.managerId);
+    const result = await teamsService.create(req.body.name, req.user.id);
     if (result.error)
       res.status(500).json(result).end();
-    else
-      res.json(result.data[0]).end();
+    else {
+      res.status(201).json({
+        id: result.data[0].id,
+        name: req.body.name,
+        managerId: req.user.id
+      }).end();
+    }
   }
 }
 

@@ -9,17 +9,17 @@ function addEmployee(teamId, employeeId) {
 
 function create(teamName, managerId) {
   return shared.execute(
-    "INSERT INTO teams (name, manager_id) VALUES ($1, $2)",
+    "INSERT INTO teams (name, manager_id) VALUES ($1, $2) RETURNING id",
     [teamName, managerId]
   );
 }
 
 function deleteTeam(teamId) {
-  return shared.execute("delete from teams where id = $1", teamId);
+  return shared.execute("DELETE FROM teams WHERE id = $1", teamId);
 }
 
 function getOne(teamId) {
-  return shared.execute("select * from teams where id = $1", [teamId]);
+  return shared.execute("SELECT t.id, t.name, t.manager_id managerId, u.first_name firstName, u.last_name lastName FROM teams t INNER JOIN users u ON (t.manager_id = u.id) WHERE t.id = $1", [teamId]);
 }
 
 function getAllForUser(userId) {
@@ -30,20 +30,20 @@ function getAllForUser(userId) {
 }
 
 function getAllManagedBy(managerId) {
-  return shared.execute("select * from teams where manager_id = $1", [
+  return shared.execute("SELECT * FROM teams WHERE manager_id = $1", [
     managerId
   ]);
 }
 
 function removeEmployee(teamId, employeeId) {
   return shared.execute(
-    "delete from member_of where team_id = $1 and employee_id = $2",
+    "DELETE FROM member_of WHERE team_id = $1 AND employee_id = $2",
     [teamId, employeeId]
   );
 }
 
 function update(teamId, name) {
-  return shared.execute("update teams set (name = $1) where id = $2", [
+  return shared.execute("UPDATE teams SET name = $1 WHERE id = $2", [
     name,
     teamId
   ]);
