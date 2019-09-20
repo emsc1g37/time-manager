@@ -2,24 +2,24 @@ const shared = require("./shared");
 
 function addEmployee(teamId, employeeId) {
   return shared.execute(
-    "insert into member_of (team_id, employee_id) values ($1, $2)",
+    "INSERT INTO member_of (team_id, employee_id) VALUES ($1, $2)",
     [teamId, employeeId]
   );
 }
 
 function create(teamName, managerId) {
   return shared.execute(
-    "insert into teams (name, manager_id) values ($1, $2)",
+    "INSERT INTO teams (name, manager_id) VALUES ($1, $2)",
     [teamName, managerId]
   );
 }
 
-function deleteOne(teamId) {
+function deleteTeam(teamId) {
   return shared.execute("delete from teams where id = $1", teamId);
 }
 
 function getOne(teamId) {
-  return shared.execute("select * from teams where id = $1", teamId);
+  return shared.execute("select * from teams where id = $1", [teamId]);
 }
 
 function getAllForUser(userId) {
@@ -52,7 +52,7 @@ function update(teamId, name) {
 module.exports = {
   addEmployee,
   create,
-  deleteOne,
+  deleteTeam,
   getOne,
   getAllForUser,
   getAllManagedBy,

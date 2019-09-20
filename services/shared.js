@@ -11,7 +11,7 @@ function execute(sql, params) {
         console.error(err.stack);
         reject({ error: err });
       } else {
-        resolve({ data: results.rows });
+        resolve({ data: results.rows, rowCount: results.rowCount });
       }
     });
   }).catch(error => {
