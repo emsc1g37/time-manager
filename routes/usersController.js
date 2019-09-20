@@ -61,7 +61,7 @@ async function updateUser(req, res) {
     res.json(resultsFromService.data).end();
 }
 
-async function promoteUser(req, res) {
+async function promoteEmployee(req, res) {
   if (req.user.role != 3)
     res.status(403).end();
   else {
@@ -70,7 +70,7 @@ async function promoteUser(req, res) {
       res.status(500).json(result).end();
     else if (result.data.length == 0)
       res.status(404).end();
-    else if (result.data.role_id != 1)
+    else if (result.data[0].role_id != 1)
       res.status(400).json({error: "Only employees can be promoted to managers."}).end();
     else {
       const result = await userService.promoteEmployee(req.params.id);
@@ -117,5 +117,5 @@ module.exports = {
   getAllUsers,
   getAllRoles,
   login,
-  promoteUser
+  promoteEmployee
 };

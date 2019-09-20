@@ -11,14 +11,14 @@ router.route("/users/login").post(userController.login);
 router.route("/users/signup").post(userController.createUser);
 router
   .route("/users")
+  .get(userController.getAllUsers)
   .post(userController.createUser);
-router.route("/users/all").get(userController.getAllUsers);
 router
   .route("/users/:userId")
   .get(userController.getUserById)
   .put(userController.updateUser)
   .delete(userController.deleteUser);
-// router.put("/users/:id/promote", userController.promoteUser);
+router.put("/users/:id/promote", userController.promoteEmployee);
 router.get("/roles", userController.getAllRoles);
 
 const teamsController = require("./teamsController");

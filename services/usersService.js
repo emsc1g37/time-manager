@@ -9,7 +9,7 @@ const maxAge = "1209600s"; // 14 days in seconds
 
 function getUserById(userId) {
   return shared.execute(
-    "SELECT u.id, u.email, u.first_name, u.last_name, u.role_id r.label role_label FROM users u INNER JOIN roles r ON (u.role_id = r.id) WHERE id = $1",
+    "SELECT u.id, u.email, u.first_name, u.last_name, u.role_id, r.label role_label FROM users u INNER JOIN roles r ON (u.role_id = r.id) WHERE u.id = $1",
     [userId]
   );
 }
