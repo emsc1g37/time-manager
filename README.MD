@@ -1,13 +1,15 @@
-## HOW TO START ?
+# Time Manager
 
-install dependencies with npm install
-lunch server with node npm start
+## How to start?
 
-# Documentation API
+- Install the dependencies with `npm install`
+- Launch the server with `npm start`
 
-## USERS
+## API documentation
 
-### Create
+### USERS
+
+#### Create
 
 **_Endpoint: _** `POST /api/users`
 
@@ -18,38 +20,24 @@ curl -X POST \
   -d '{
     "email" : "uneadressemail@mail.fr",
     "password" : "password",
-    "first_name": "firstname",
-    "last_name": "lsatname",
-    "role_id":1
+    "firstName": "firstname",
+    "lastName": "lastname"
   }' \
   http://localhost:3000/api/users
 ```
 
-### GET USER BY EMAIL AND USERNAME
+#### GET ALL USERS
 
 **_Endpoint: _** `GET /api/users`
-
-```shell
-curl -X POST \
-  -H 'Content-Type: application/json' \
-  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoibWFlbDJAbWFpbC5mciIsImlhdCI6MTU2ODgwMTk4MywiZXhwIjoxNTcwMDExNTgzfQ.KSkI214iIQYpFl_zC7G-W4ifkmRszHKyvC290MStlzs' \
-  -d
-http://localhost:3000/api/users/?email=mail@mail.fr&username=username
-```
-
-### GET ALL USERS
-
-**_Endpoint: _** `GET /api/users/all`
 
 ```shell
 curl -X GET \
   -H 'Content-Type: application/json' \
   -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoibWFlbDJAbWFpbC5mciIsImlhdCI6MTU2ODgwMTk4MywiZXhwIjoxNTcwMDExNTgzfQ.KSkI214iIQYpFl_zC7G-W4ifkmRszHKyvC290MStlzs' \
-  -d
-http://localhost:3000/api/users/all
+http://localhost:3000/api/users
 ```
 
-### GET A USER BY ID
+#### GET AN USER BY ID
 
 **_Endpoint: _** `GET /api/users/1`
 
@@ -57,11 +45,10 @@ http://localhost:3000/api/users/all
 curl -X GET \
   -H 'Content-Type: application/json' \
   -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoibWFlbDJAbWFpbC5mciIsImlhdCI6MTU2ODgwMTk4MywiZXhwIjoxNTcwMDExNTgzfQ.KSkI214iIQYpFl_zC7G-W4ifkmRszHKyvC290MStlzs' \
-  -d
 http://localhost:3000/api/users/1
 ```
 
-### DELETE A USER BY ID
+#### DELETE AN USER BY ID
 
 **_Endpoint: _** `DELETE /api/users/1`
 
@@ -69,24 +56,21 @@ http://localhost:3000/api/users/1
 curl -X DELETE \
   -H 'Content-Type: application/json' \
   -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoibWFlbDJAbWFpbC5mciIsImlhdCI6MTU2ODgwMTk4MywiZXhwIjoxNTcwMDExNTgzfQ.KSkI214iIQYpFl_zC7G-W4ifkmRszHKyvC290MStlzs' \
-  -d
 http://localhost:3000/api/users/1
 ```
 
-### UPDATE USER
+#### UPDATE AN USER
 
-**_Endpoint: _** `UPDATE /api/users/all`
+**_Endpoint: _** `UPDATE /api/users/1`
 
 ```shell
-curl -X UPDATE \
+curl -X PUT \
   -H 'Content-Type: application/json' \
   -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoibWFlbDJAbWFpbC5mciIsImlhdCI6MTU2ODgwMTk4MywiZXhwIjoxNTcwMDExNTgzfQ.KSkI214iIQYpFl_zC7G-W4ifkmRszHKyvC290MStlzs' \
    -d '{
     "email" : "uneadressemail@mail.fr",
-    "password" : "password",
-    "first_name": "firstname",
-    "last_name": "lsatname",
-    "role_id":1
+    "firstName": "firstname",
+    "lastName": "lastname"
   }' \
 http://localhost:3000/api/users/1
 ```
