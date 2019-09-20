@@ -38,19 +38,15 @@ async function deleteTeam(req, res) {
 }
 
 async function ensureOwnership(req, res) {
-  if (req.user.role != 2)
-    res.status(403).end();
-  else {
-    const result = await teamsService.getOne(req.params.id);
-    if (result.error)
-      res.status(500).json(result).end();
-    else if (result.data.length == 0)
-      res.status(404).end();
-    else if (result.data[0].manager_id != req.user.id)
-      res.status(403).end();
-    else
-      return true;
-  }
+  const result = await teamsService.getOne(req.params.id);
+  if (result.error)
+    res.status(500).json(result).end();
+  else if (result.data.length == 0)
+    res.status(404).end();
+  else if (result.data[0].managerId != req.user.id)
+    res.status(403).json({error: "You are not in charge of this team."}).end();
+  else
+    return true;
   return false;
 }
 

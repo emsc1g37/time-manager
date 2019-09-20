@@ -29,12 +29,12 @@ async function createUser(req, res) {
   const resultsFromService = await userService.createUser(
     req.body.email,
     req.body.password,
-    req.body.firstName,
-    req.body.lastName
+    req.body.first_name,
+    req.body.last_name
   );
   if (resultsFromService.error) {
     if (resultsFromService.error.code == 23505)
-      res.status(400).json({error: "Email already used."}).end();
+      res.status(400).json({error: "Email address already used."}).end();
     else
       res.status(500).json(resultsFromService).end();
   }
@@ -42,9 +42,9 @@ async function createUser(req, res) {
     res.status(201).json({
       id: resultsFromService.data[0].id,
       email: req.body.email,
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      roleId: 1, roleLabel: "Employee"
+      first_name: req.body.first_name,
+      last_name: req.body.last_name,
+      role_id: 1, role_label: "Employee"
     }).end();
 }
 
@@ -58,7 +58,7 @@ async function updateUser(req, res) {
   if (resultsFromService.error)
     res.status(500).json(resultsFromService).end();
   else
-    res.json(resultsFromService.data).end();
+    res.json(resultsFromService.data[0]).end();
 }
 
 async function promoteEmployee(req, res) {
@@ -100,7 +100,6 @@ async function login(req, res) {
     req.body.email,
     req.body.password
   );
-  console.log(resultsFromService);
   if (resultsFromService.error) {
     res.status(400);
     res.json(resultsFromService).end();
