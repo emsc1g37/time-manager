@@ -9,7 +9,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static("public"));
 ////////SECU///////////
-const unprotected = [pathToRegexp("/api/users/login")];
+const unprotected = [pathToRegexp("/api/users/login"), pathToRegexp("/api/users/signup")];
 const secret = "secretImSecret";
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());

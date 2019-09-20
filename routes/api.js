@@ -8,6 +8,7 @@ router.get("/", (req, res) => {
 
 const userController = require("./usersController");
 router.route("/users/login").post(userController.login);
+router.route("/users/signup").post(userController.createUser);
 router
   .route("/users")
   .post(userController.createUser);

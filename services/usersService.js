@@ -20,7 +20,7 @@ function getAllUsers() {
 
 function createUser(email, password, firstName, lastName) {
   return shared.execute(
-    "INSERT INTO users (email, password, first_name, last_name, 1) VALUES ($1, CRYPT($2, GEN_SALT()), $3, $4)",
+    "INSERT INTO users (email, password, first_name, last_name, role_id) VALUES ($1, CRYPT($2, GEN_SALT('bf')), $3, $4, 1) RETURNING id",
     [email, password, firstName, lastName]
   );
 }

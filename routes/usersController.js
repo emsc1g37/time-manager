@@ -32,10 +32,20 @@ async function createUser(req, res) {
     req.body.firstName,
     req.body.lastName
   );
-  if (resultsFromService.error)
-    res.json(resultsFromService).end();
+  if (resultsFromService.error) {
+    if (resultsFromService.error.code == 23505)
+      res.status(400).json({error: "Email already used."}).end();
+    else
+      res.status(500).json(resultsFromService).end();
+  }
   else
-    res.status(201).json(resultsFromService.data[0]).end();
+    res.status(201).json({
+      id: resultsFromService.data[0].id,
+      email: req.body.email,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      roleId: 1, roleLabel: "Employee"
+    }).end();
 }
 
 async function updateUser(req, res) {

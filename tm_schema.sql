@@ -21,7 +21,7 @@ create table if not exists teams (
   foreign key (manager_id) references users(id)
 );
 
-create table member_of (
+create table if not exists member_of (
   team_id serial not null,
   user_id serial not null,
   primary key (team_id, user_id),
@@ -44,8 +44,7 @@ create table if not exists work_periods (
   arrival timestamp not null,
   departure timestamp not null,
   primary key (team_id, user_id, arrival, departure),
-  foreign key (team_id) references member_of(team_id) on delete cascade,
-  foreign key (user_id) references member_of(user_id) on delete cascade
+  foreign key (team_id, user_id) references member_of(team_id, user_id) on delete cascade
 );
 
 insert into roles (label) values
