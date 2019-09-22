@@ -1,11 +1,5 @@
 const router = require("express").Router();
 
-router.get("/", (req, res) => {
-  res.json({
-    status: "OK"
-  });
-});
-
 const userController = require("./usersController");
 router.route("/users/login").post(userController.login);
 router.route("/users/signup").post(userController.createUser);
