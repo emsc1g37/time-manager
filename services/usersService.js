@@ -1,8 +1,5 @@
 const shared = require("./shared");
-const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const saltRounds = 10;
-const salt = bcryptjs.genSaltSync(saltRounds);
 
 const secret = "secretImSecret";
 const maxAge = "1209600s"; // 14 days in seconds
