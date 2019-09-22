@@ -13,11 +13,10 @@ app.get('/', function(req, res) {
   res.sendFile('index.html', { root: path.join(__dirname, './public/dist/') });
 });
 ////////SECU///////////
-const unprotected = [pathToRegexp("/api/users/login"), pathToRegexp("/api/users/signup")];
+const unprotected = [{url: "/api/users/login", methods: "POST"}, {url: "/api/users/", methods: "POST"}];
 const secret = "secretImSecret";
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(express.static("public"));
 app.use(expressJwt({ secret }).unless({ path: unprotected }));
 ////////DATABASE///////
 postgres.pgConnect();

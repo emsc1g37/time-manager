@@ -19,12 +19,15 @@ function deleteTeam(teamId) {
 }
 
 function getOne(teamId) {
-  return shared.execute("SELECT t.id, t.name, t.manager_id, u.first_name, u.last_name FROM teams t INNER JOIN users u ON (t.manager_id = u.id) WHERE t.id = $1", [teamId]);
+  return shared.execute("SELECT t.id, t.name, t.manager_id, u.first_name manager_first_name, u.last_name manager_last_name FROM teams t INNER JOIN users u ON (t.manager_id = u.id) WHERE t.id = $1", [teamId]);
 }
 
 function getAllForUser(userId) {
   return shared.execute(
-    "select t.id, t.name from teams t inner join member_of m on (t.id = m.team_id) where m.user_id = $1",
+    "SELECT t.id, t.name, t.manager_id, u.first_name manager_first_name, u.last_name manager_last_name FROM teams t " +
+    "INNER JOIN member_of m ON (t.id = m.team_id) " +
+    "INNER JOIN users u ON (t.manager_id = u.id) " +
+    "WHERE m.user_id = $1",
     [userId]
   );
 }
