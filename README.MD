@@ -32,6 +32,7 @@ Here is the format of the header you must include in your requests: `Authorizati
 | PUT | /users/<id> | `{"email":"string","first_name":"string","last_name":"string"}` | | Update informations of the user referenced by `<id>`. |
 | DELETE | /user/<id> | | | Delete the user identified by `<id>`. |
 | PUT | /users/changePassword | `{"old_password":"string","password":"string","confirm_password":"string"}` | | Change the password of the current user. |
+| PUT | /clocks/ | | `{"user_id":"int","user_id":"int","arrival":"timestamp","departure":"timestamp"}` | Clocks in or out for the current user. |
 
 ### Manager endpoints
 
