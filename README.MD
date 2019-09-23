@@ -7,70 +7,47 @@
 
 ## API documentation
 
-### USERS
+To interract with the API, you must call appropriate URls also called endpoints. They all start with a base path: yourdomain/api. You then need to append the endpoint to get an usable URL.
 
-#### Create
+Since it deals with JSON data, you must also specify the content type in your requests by sending the following header: `Content-Type: application/json`.
 
-**_Endpoint: _** `POST /api/users`
+Whenever an error occures, an appropriate HTTP Status Code will be sent (400, 401, 403, 404 or 500). In most cases, a JSON object containing an `error` field will be returned. When a validation error is encountered, this field will be named `errors` instead. The value of this field can vary from a simple string to an object or an array of objects.
 
-```shell
-curl -X POST \
-  -H 'Content-Type: application/json' \
-  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoibWFlbDJAbWFpbC5mciIsImlhdCI6MTU2ODgwMTk4MywiZXhwIjoxNTcwMDExNTgzfQ.KSkI214iIQYpFl_zC7G-W4ifkmRszHKyvC290MStlzs' \
-  -d '{
-    "email" : "uneadressemail@mail.fr",
-    "password" : "password",
-    "firstName": "firstname",
-    "lastName": "lastname"
-  }' \
-  http://localhost:3000/api/users
-```
+### Public endpoints
 
-#### GET ALL USERS
+The following endpoints can be accessed by everyone (e.g. they don't require any authentication).
 
-**_Endpoint: _** `GET /api/users`
+| Method | Endpoint | Input data | Output data | Description |
+|--------|----------|------------|-------------|-------------|
+| POST | /users/ | `{"email":"string","password":"string","confirm_password":"string","first_name":"string","last_name":"string"}` | `{"id":"int","email":"string","password":"string"}` | `{"id":"int","email":"string","first_name":"string","last_name":"string","role_id":"int","role_label":"string","teams":[]}` | Sign up as a new user. |
+| POST | /users/login | `{"email":"string","password":"string"}` | `{"id":"int","email":"string","first_name":"string","last_name":"string","role_id":"int","role_label":"string","token":"string","teams":[{"id":"int","name":"string","manager_id":"string","manager_first_name":"string","manager_last_name":"string"},...]}` | Log in to the API. The JWT token is contained in the `token` field. |
 
-```shell
-curl -X GET \
-  -H 'Content-Type: application/json' \
-  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoibWFlbDJAbWFpbC5mciIsImlhdCI6MTU2ODgwMTk4MywiZXhwIjoxNTcwMDExNTgzfQ.KSkI214iIQYpFl_zC7G-W4ifkmRszHKyvC290MStlzs' \
-http://localhost:3000/api/users
-```
+### Employee endpoints
 
-#### GET AN USER BY ID
+The following endpoints are accessible to users whose role is Employee or higher. This means that you must pass a valid Employee (or higher) JWT token in order to be able to perform the call.
+Here is the format of the header you must include in your requests: `Authorization: Bearer <token>`, where `<token>` is a token that can be obtained when logging in.
 
-**_Endpoint: _** `GET /api/users/1`
+| Method | Endpoint | Input data | Output data | Description |
+|--------|----------|------------|-------------|-------------|
+| PUT | /users/<id> | `{"email":"string","first_name":"string","last_name":"string"}` | | Update informations of the user referenced by `<id>`. |
+| DELETE | /user/<id> | | | Delete the user identified by `<id>`. |
+| PUT | /users/changePassword | `{"old_password":"string","password":"string","confirm_password":"string"}` | | Change the password of the current user. |
 
-```shell
-curl -X GET \
-  -H 'Content-Type: application/json' \
-  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoibWFlbDJAbWFpbC5mciIsImlhdCI6MTU2ODgwMTk4MywiZXhwIjoxNTcwMDExNTgzfQ.KSkI214iIQYpFl_zC7G-W4ifkmRszHKyvC290MStlzs' \
-http://localhost:3000/api/users/1
-```
+### Manager endpoints
 
-#### DELETE AN USER BY ID
+These routes can be accessed with a valid Manager JWT token. The format of the Authorization header is the same as above.
 
-**_Endpoint: _** `DELETE /api/users/1`
+| Method | Endpoint | Input data | Output data | Description |
+|--------|----------|------------|-------------|-------------|
+| POST | /teams/ | `{"name":"string"}` | `{"id":"int","name":"string","manager_id":"int","manager_first_name":"string","manager_last_name":"string"}` | Create a new team. |
+| PUT | /teams/<id> | `{"name":"string"}` | `{"id":"int","name":"string","manager_id":"int","manager_first_name":"string","manager_last_name":"string"}` | Update the team identified by `<id>`. |
+| POST | /teams/<id>/add/<userId> | | | Add the user referenced by `<userId>` to the team identified by `<id>`. |
+| DELETE | /teams/<id>/remove/<userId> | | | Remove the user referenced by `<userId>` from the team identified by `<id>`. |
 
-```shell
-curl -X DELETE \
-  -H 'Content-Type: application/json' \
-  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoibWFlbDJAbWFpbC5mciIsImlhdCI6MTU2ODgwMTk4MywiZXhwIjoxNTcwMDExNTgzfQ.KSkI214iIQYpFl_zC7G-W4ifkmRszHKyvC290MStlzs' \
-http://localhost:3000/api/users/1
-```
+### Administrator endpoints
 
-#### UPDATE AN USER
+The following endpoints require an administrator JWT token. The format of the Authorization header is stil the same.
 
-**_Endpoint: _** `UPDATE /api/users/1`
-
-```shell
-curl -X PUT \
-  -H 'Content-Type: application/json' \
-  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoibWFlbDJAbWFpbC5mciIsImlhdCI6MTU2ODgwMTk4MywiZXhwIjoxNTcwMDExNTgzfQ.KSkI214iIQYpFl_zC7G-W4ifkmRszHKyvC290MStlzs' \
-   -d '{
-    "email" : "uneadressemail@mail.fr",
-    "firstName": "firstname",
-    "lastName": "lastname"
-  }' \
-http://localhost:3000/api/users/1
-```
+| Method | Endpoint | Input data | Output data | Description |
+|--------|----------|------------|-------------|-------------|
+| PUT | /users/<id>/promote | | | Promote the Employee identified by `<id>` to Manager. |
