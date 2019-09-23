@@ -19,7 +19,7 @@ The following endpoints can be accessed by everyone (e.g. they don't require any
 
 | Method | Endpoint | Input data | Output data | Description |
 |--------|----------|------------|-------------|-------------|
-| POST | /users/ | `{"email":"string","password":"string","confirm_password":"string","first_name":"string","last_name":"string"}` | `{"id":"int","email":"string","password":"string"}` | `{"id":"int","email":"string","first_name":"string","last_name":"string","role_id":"int","role_label":"string","teams":[]}` | Sign up as a new user. |
+| POST | /users/ | `{"email":"string","password":"string","confirm_password":"string","first_name":"string","last_name":"string"}` | `{"id":"int","email":"string","first_name":"string","last_name":"string","role_id":"int","role_label":"string","teams":[]}` | Sign up as a new user. |
 | POST | /users/login | `{"email":"string","password":"string"}` | `{"id":"int","email":"string","first_name":"string","last_name":"string","role_id":"int","role_label":"string","token":"string","teams":[{"id":"int","name":"string","manager_id":"string","manager_first_name":"string","manager_last_name":"string"},...]}` | Log in to the API. The JWT token is contained in the `token` field. |
 
 ### Employee endpoints
