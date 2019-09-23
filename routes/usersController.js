@@ -49,6 +49,13 @@ async function createUser(req, res) {
     }).end();
 }
 
+async function changePassword(req, res) {
+  const result = await userService.changePassword(req.user.id, req.body.old_password, req.body.password);
+  console.log(result);
+  if (result.error)
+    res.status(500).json(result).end();
+}
+
 async function updateUser(req, res) {
   const resultsFromService = await userService.updateUser(
     req.user.id,
@@ -115,6 +122,7 @@ async function login(req, res) {
 }
 
 module.exports = {
+  changePassword,
   createUser,
   updateUser,
   deleteUser,

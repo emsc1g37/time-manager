@@ -7,7 +7,7 @@ router.post("/users/login", [
   check("email").custom(validation.isNotEmpty),
   check("password").custom(validation.isNotEmpty)
 ], (req, res) => {
-  if (!validation.hasErrors())
+  if (!validation.hasErrors(req, res))
     userController.login(req, res);
 });
 
@@ -34,6 +34,14 @@ router.route("/users/:userId")
       userController.updateUser(req, res);
   })
   .delete(userController.deleteUser);
+router.put("/users/changePassword", [
+  check("old_password").custom(validation.isNotEmpty),
+  check("password").isLength({ min: 8, max: 20 }).custom(validation.passwordConfirmation),
+  check("confirm_password").custom(validation.isNotEmpty)
+], (req, res) => {
+  if (!validation.hasErrors(req, res))
+    userController.changePassword(req, res);
+});
 router.put("/users/:id/promote", userController.promoteEmployee);
 router.get("/roles", userController.getAllRoles);
 
@@ -55,5 +63,8 @@ router.route("/teams/:id")
   });
 router.post("/teams/:id/add/:userId", teamsController.addEmployee);
 router.delete("/teams/:id/remove/:userId", teamsController.removeEmployee);
+
+const workingTimesController = require("./workingTimesController");
+router.put("/clocks", workingTimesController.clockInAndOut);
 
 module.exports = router;

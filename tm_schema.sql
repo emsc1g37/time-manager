@@ -32,7 +32,7 @@ create table if not exists member_of (
 create table if not exists working_times (
   user_id serial not null,
   id serial not null,
-  arrival timestamp not null,
+  arrival timestamp not null default localtimestamp,
   departure timestamp,
   primary key (user_id, id),
   foreign key (user_id) references users(id) on delete cascade
