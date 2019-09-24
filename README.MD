@@ -41,7 +41,9 @@ These routes can be accessed with a valid Manager JWT token. The format of the A
 | Method | Endpoint | Input data | Output data | Description |
 |--------|----------|------------|-------------|-------------|
 | POST | /teams/ | `{"name":"string"}` | `{"id":"int","name":"string","manager_id":"int","manager_first_name":"string","manager_last_name":"string"}` | Create a new team. |
+| GET | /teams/<id> | | `{"id":"int","name":"string","manager_id":"int","manager_first_name":"string","manager_last_name":"string"}` | Get the team identified by `<id>`. |
 | PUT | /teams/<id> | `{"name":"string"}` | `{"id":"int","name":"string","manager_id":"int","manager_first_name":"string","manager_last_name":"string"}` | Update the team identified by `<id>`. |
+| DELETE | /teams/<id> | | | Delete the team identified by `<id>`. |
 | POST | /teams/<id>/add/<userId> | | | Add the user referenced by `<userId>` to the team identified by `<id>`. |
 | DELETE | /teams/<id>/remove/<userId> | | | Remove the user referenced by `<userId>` from the team identified by `<id>`. |
 

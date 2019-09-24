@@ -12,7 +12,13 @@ function clockOut(userId) {
   );
 }
 
-function getLastClockFor(userId) {
+function getAllBetween(userId, from, to) {
+  return shared.execute("SELECT * FROM working_times WHERE user_id = $1 AND arrival >= $1 AND departure <= $3",
+    [userId, from, to]
+  );
+}
+
+function getLastFor(userId) {
   return shared.execute("SELECT * FROM working_times WHERE user_id = $1 ORDER BY id DESC LIMIT 1",
     [userId]
   );
@@ -21,5 +27,6 @@ function getLastClockFor(userId) {
 module.exports = {
   clockIn,
   clockOut,
-  getLastClockFor
+  getAllBetween,
+  getLastFor
 };

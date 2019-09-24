@@ -1,7 +1,7 @@
 const workingTimesService = require("../services/workingTimesService");
 
 async function clockInAndOut(req, res) {
-  const result = await workingTimesService.getLastClockFor(req.user.id);
+  const result = await workingTimesService.getLastFor(req.user.id);
   if (result.error)
     res.status(500).json(result).end();
   else if (result.data.length == 0 || result.data[0].departure == null) {
