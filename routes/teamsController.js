@@ -38,7 +38,7 @@ async function deleteTeam(req, res) {
 }
 
 async function ensureOwnership(req, res) {
-  const result = await teamsService.getOne(req.params.id);
+  const result = await teamsService.getOne(req.params.teamId);
   if (result.error)
     res.status(500).json(result).end();
   else if (result.data.length == 0)
@@ -76,6 +76,7 @@ module.exports = {
   addEmployee,
   create,
   deleteTeam,
+  ensureOwnership,
   getOne,
   getAllManagedBy,
   removeEmployee,

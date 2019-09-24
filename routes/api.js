@@ -52,7 +52,7 @@ router.post("/teams", [
   if (!validation.hasErrors(req, res))
     teamsController.create(req, res);
 });
-router.route("/teams/:id")
+router.route("/teams/:teamId")
   .get(teamsController.getOne)
   .delete(teamsController.deleteTeam)
   .put([
@@ -61,8 +61,8 @@ router.route("/teams/:id")
     if (!validation.hasErrors(req, res))
       teamsController.update(req, res);
   });
-router.post("/teams/:id/add/:userId", teamsController.addEmployee);
-router.delete("/teams/:id/remove/:userId", teamsController.removeEmployee);
+router.post("/teams/:teamId/add/:userId", teamsController.addEmployee);
+router.delete("/teams/:teamId/remove/:userId", teamsController.removeEmployee);
 
 const workingTimesController = require("./workingTimesController");
 router.get("/users/:userId/workingTimes", [
@@ -73,5 +73,24 @@ router.get("/users/:userId/workingTimes", [
     workingTimesController.getAllBetween(req, res);
 });
 router.put("/clocks", workingTimesController.clockInAndOut);
+
+const workPeriodsController = require("./workPeriodsController");
+router.post("/teams/:teamId/workPeriods", [
+  check("user_id").isInt(),
+  check("arrival").isRFC3339(),
+  check("departure").isRFC3339()
+], (req, res) => {
+  if (!validation.hasErrors(req, res))
+    workPeriods.create(req, res);
+});
+router.route("/teams/:teamId/workPeriods/:id")
+  .put([
+    check("arrival").isRFC3339(),
+    check("departure").isRFC3339()
+  ], (req, res) => {
+    if (!validation.hasErrors(req, res))
+      workPeriodsController.update(req, res);
+  })
+  .delete(workPeriodsController.delete);
 
 module.exports = router;

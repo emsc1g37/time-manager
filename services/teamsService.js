@@ -60,5 +60,5 @@ module.exports = {
   getAllForUser,
   getAllManagedBy,
   removeEmployee,
-  update
+  update,
 };

@@ -40,10 +40,11 @@ create table if not exists working_times (
 
 create table if not exists work_periods (
   team_id serial not null,
+  id serial not null,
   user_id serial not null,
   arrival timestamp not null,
   departure timestamp not null,
-  primary key (team_id, user_id, arrival, departure),
+  primary key (team_id, id),
   foreign key (team_id, user_id) references member_of(team_id, user_id) on delete cascade
 );
 
