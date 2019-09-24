@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { check } = require("express-validator");
+const { check, query } = require("express-validator");
 const validation = require("./validation");
 
 const userController = require("./usersController");
@@ -65,6 +65,13 @@ router.post("/teams/:id/add/:userId", teamsController.addEmployee);
 router.delete("/teams/:id/remove/:userId", teamsController.removeEmployee);
 
 const workingTimesController = require("./workingTimesController");
+router.get("/users/:userId/workingTimes", [
+  query("from").isBefore(),
+  query("to").not().isAfter()
+], (req, res) => {
+  if (!validation.hasErrors(req, res))
+    workingTimesController.getAllBetween(req, res);
+});
 router.put("/clocks", workingTimesController.clockInAndOut);
 
 module.exports = router;
