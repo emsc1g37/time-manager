@@ -9,13 +9,6 @@ function hasErrors(req, res) {
   return false;
 }
 
-function isNotEmpty(value, {req, loc, path}) {
-  if (value === undefined || value === null || value === "")
-    throw new Error("This field is required.");
-  else
-    return value;
-}
-
 function passwordConfirmation(value, {req, loc, path}) {
   if (value !== req.body.confirm_password)
     throw new Error("Passwords don't match.");
@@ -25,6 +18,5 @@ function passwordConfirmation(value, {req, loc, path}) {
 
 module.exports = {
   hasErrors,
-  isNotEmpty,
   passwordConfirmation
 };

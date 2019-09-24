@@ -4,8 +4,8 @@ const validation = require("./validation");
 
 const userController = require("./usersController");
 router.post("/users/login", [
-  check("email").custom(validation.isNotEmpty),
-  check("password").custom(validation.isNotEmpty)
+  check("email").exists(),
+  check("password").exists()
 ], (req, res) => {
   if (!validation.hasErrors(req, res))
     userController.login(req, res);
@@ -16,7 +16,7 @@ router.route("/users")
   .post([
     check("email").isEmail(),
     check("password").isLength({ min: 8, max: 25 }).custom(validation.passwordConfirmation),
-    check("confirm_password").custom(validation.isNotEmpty),
+    check("confirm_password").exists(),
     check("first_name").isLength({ min: 2, max: 50 }),
     check("last_name").isLength({ min: 2, max: 50 })
   ], (req, res) => {
@@ -35,9 +35,9 @@ router.route("/users/:userId")
   })
   .delete(userController.deleteUser);
 router.put("/users/changePassword", [
-  check("old_password").custom(validation.isNotEmpty),
+  check("old_password").exists(),
   check("password").isLength({ min: 8, max: 20 }).custom(validation.passwordConfirmation),
-  check("confirm_password").custom(validation.isNotEmpty)
+  check("confirm_password").exists()
 ], (req, res) => {
   if (!validation.hasErrors(req, res))
     userController.changePassword(req, res);
