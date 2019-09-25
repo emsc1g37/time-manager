@@ -4,6 +4,12 @@ const jwt = require("jsonwebtoken");
 const secret = "secretImSecret";
 const maxAge = "1209600s"; // 14 days in seconds
 
+function changePassword(userId, oldPassword, newPassword) {
+  return shared.execute("UPDATE users SET password = CRYPT($1, GEN_SALT('bf')) WHERE id = $2 AND password = CRYPT($3, password)",
+    [newPassword, userId]
+  );
+}
+
 function getUserById(userId) {
   return shared.execute(
     "SELECT u.id, u.email, u.first_name, u.last_name, u.role_id, r.label role_label FROM users u INNER JOIN roles r ON (u.role_id = r.id) WHERE u.id = $1",
@@ -37,13 +43,15 @@ async function login(email, password) {
     "SELECT u.id, u.email, u.first_name, u.last_name, u.role_id, r.label role_label FROM users u INNER JOIN roles r ON (u.role_id = r.id) WHERE email LIKE LOWER ($1) AND password = CRYPT($2, password)",
     [email, password]
   );
-  if (user.data == null)
-    return {eror: "No Match"};
-  const token = jwt.sign({ email: email, id: user.data[0].id, role: user.data[0].role_id }, secret, {
-    expiresIn: maxAge
-  });
-  user.data[0].token = token;
-  return user.data[0];
+  if (user.data.length == 0)
+    return {error: "Invalid email or password."};
+  else {
+    const token = jwt.sign({ email: email, id: user.data[0].id, role: user.data[0].role_id }, secret, {
+      expiresIn: maxAge
+    });
+    user.data[0].token = token;
+    return user.data[0];
+  }
 }
 
 function getAllRoles() {
@@ -55,6 +63,7 @@ function promoteEmployee(id) {
 }
 
 module.exports = {
+  changePassword,
   createUser,
   updateUser,
   deleteUser,

@@ -1,13 +1,13 @@
 const router = require("express").Router();
-const { check } = require("express-validator");
+const { check, query } = require("express-validator");
 const validation = require("./validation");
 
 const userController = require("./usersController");
 router.post("/users/login", [
-  check("email").custom(validation.isNotEmpty),
-  check("password").custom(validation.isNotEmpty)
+  check("email").exists(),
+  check("password").exists()
 ], (req, res) => {
-  if (!validation.hasErrors())
+  if (!validation.hasErrors(req, res))
     userController.login(req, res);
 });
 
@@ -16,7 +16,7 @@ router.route("/users")
   .post([
     check("email").isEmail(),
     check("password").isLength({ min: 8, max: 25 }).custom(validation.passwordConfirmation),
-    check("confirm_password").custom(validation.isNotEmpty),
+    check("confirm_password").exists(),
     check("first_name").isLength({ min: 2, max: 50 }),
     check("last_name").isLength({ min: 2, max: 50 })
   ], (req, res) => {
@@ -34,6 +34,14 @@ router.route("/users/:userId")
       userController.updateUser(req, res);
   })
   .delete(userController.deleteUser);
+router.put("/users/changePassword", [
+  check("old_password").exists(),
+  check("password").isLength({ min: 8, max: 20 }).custom(validation.passwordConfirmation),
+  check("confirm_password").exists()
+], (req, res) => {
+  if (!validation.hasErrors(req, res))
+    userController.changePassword(req, res);
+});
 router.put("/users/:id/promote", userController.promoteEmployee);
 router.get("/roles", userController.getAllRoles);
 
@@ -44,7 +52,7 @@ router.post("/teams", [
   if (!validation.hasErrors(req, res))
     teamsController.create(req, res);
 });
-router.route("/teams/:id")
+router.route("/teams/:teamId")
   .get(teamsController.getOne)
   .delete(teamsController.deleteTeam)
   .put([
@@ -53,7 +61,51 @@ router.route("/teams/:id")
     if (!validation.hasErrors(req, res))
       teamsController.update(req, res);
   });
-router.post("/teams/:id/add/:userId", teamsController.addEmployee);
-router.delete("/teams/:id/remove/:userId", teamsController.removeEmployee);
+router.post("/teams/:teamId/add/:userId", teamsController.addEmployee);
+router.delete("/teams/:teamId/remove/:userId", teamsController.removeEmployee);
+
+const workingTimesController = require("./workingTimesController");
+router.get("/users/:userId/workingTimes", [
+  query("from").isBefore(),
+  query("to").not().isAfter()
+], (req, res) => {
+  if (!validation.hasErrors(req, res))
+    workingTimesController.getAllBetween(req, res);
+});
+router.put("/clocks", workingTimesController.clockInAndOut);
+
+const workPeriodsController = require("./workPeriodsController");
+router.route("/teams/:teamId/workPeriods")
+  .get([
+    query("from").isBefore(),
+    query("to").not().isAfter()
+  ], (req, res) => {
+    if (!validation.hasErrors(req, res))
+      workPeriodsController.getAllForTeamBetween(req, res);
+  })
+  .post([
+    check("user_id").isInt(),
+    check("arrival").isRFC3339(),
+    check("departure").isRFC3339()
+  ], (req, res) => {
+    if (!validation.hasErrors(req, res))
+      workPeriods.create(req, res);
+});
+router.route("/teams/:teamId/workPeriods/:id")
+  .put([
+    check("arrival").isRFC3339(),
+    check("departure").isRFC3339()
+  ], (req, res) => {
+    if (!validation.hasErrors(req, res))
+      workPeriodsController.update(req, res);
+  })
+  .delete(workPeriodsController.deleteWorkPeriod);
+router.get("/teams/:teamId/users/:userId/workPeriods", [
+  query("from").isBefore(),
+  query("to").not().isAfter()
+], (req, res) => {
+  if (!validation.hasErrors(req, res))
+    workPeriodsController.getAllForUserBetween(req, res);
+});
 
 module.exports = router;

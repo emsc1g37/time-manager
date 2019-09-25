@@ -1,5 +1,6 @@
 const userService = require("../services/usersService");
 const teamsService = require("../services/teamsService");
+const workingTimesService = require("../services/workingTimesService");
 
 async function getAllUsers(req, res) {
   const resultsFromService = await userService.getAllUsers();
@@ -45,8 +46,18 @@ async function createUser(req, res) {
       email: req.body.email,
       first_name: req.body.first_name,
       last_name: req.body.last_name,
-      role_id: 1, role_label: "Employee", teams: []
+      role_id: 1,
+      role_label: "Employee",
+      teams: [],
+      clocked_in: false
     }).end();
+}
+
+async function changePassword(req, res) {
+  const result = await userService.changePassword(req.user.id, req.body.old_password, req.body.password);
+  console.log(result);
+  if (result.error)
+    res.status(500).json(result).end();
 }
 
 async function updateUser(req, res) {
@@ -96,7 +107,6 @@ async function deleteUser(req, res) {
 }
 
 async function login(req, res) {
-  console.log("login");
   const resultsFromService = await userService.login(
     req.body.email,
     req.body.password
@@ -105,16 +115,25 @@ async function login(req, res) {
     res.status(400);
     res.json(resultsFromService).end();
   }
-  const result = await teamsService.getAllForUser(resultsFromService.id);
-  if (result.error)
-    res.status(500).json(result).end();
   else {
-    resultsFromService.teams = result.data;
-    res.json(resultsFromService).end();
+    var result = await teamsService.getAllForUser(resultsFromService.id);
+    if (result.error)
+      res.status(500).json(result).end();
+    else {
+      resultsFromService.teams = result.data;
+      var result = await workingTimesService.getLastFor(resultsFromService.id);
+      if (result.error)
+        res.status(500).json(result).end();
+      else {
+        resultsFromService.clocked_in = result.data.length > 0 && result.data[0].departure === undefined;
+        res.json(resultsFromService).end();
+      }
+    }
   }
 }
 
 module.exports = {
+  changePassword,
   createUser,
   updateUser,
   deleteUser,
