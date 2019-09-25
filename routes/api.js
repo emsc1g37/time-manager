@@ -75,13 +75,21 @@ router.get("/users/:userId/workingTimes", [
 router.put("/clocks", workingTimesController.clockInAndOut);
 
 const workPeriodsController = require("./workPeriodsController");
-router.post("/teams/:teamId/workPeriods", [
-  check("user_id").isInt(),
-  check("arrival").isRFC3339(),
-  check("departure").isRFC3339()
-], (req, res) => {
-  if (!validation.hasErrors(req, res))
-    workPeriods.create(req, res);
+router.route("/teams/:teamId/workPeriods")
+  .get([
+    query("from").isBefore(),
+    query("to").not().isAfter()
+  ], (req, res) => {
+    if (!validation.hasErrors(req, res))
+      workPeriodsController.getAllForTeamBetween(req, res);
+  })
+  .post([
+    check("user_id").isInt(),
+    check("arrival").isRFC3339(),
+    check("departure").isRFC3339()
+  ], (req, res) => {
+    if (!validation.hasErrors(req, res))
+      workPeriods.create(req, res);
 });
 router.route("/teams/:teamId/workPeriods/:id")
   .put([
@@ -91,6 +99,13 @@ router.route("/teams/:teamId/workPeriods/:id")
     if (!validation.hasErrors(req, res))
       workPeriodsController.update(req, res);
   })
-  .delete(workPeriodsController.delete);
+  .delete(workPeriodsController.deleteWorkPeriod);
+router.get("/teams/:teamId/users/:userId/workPeriods", [
+  query("from").isBefore(),
+  query("to").not().isAfter()
+], (req, res) => {
+  if (!validation.hasErrors(req, res))
+    workPeriodsController.getAllForUserBetween(req, res);
+});
 
 module.exports = router;

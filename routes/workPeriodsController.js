@@ -17,9 +17,9 @@ async function create(req, res) {
   }
 }
 
-async function delete(req, res) {
+async function deleteWorkPeriod(req, res) {
   if (teamsController.ensureOwnership(req, res)) {
-    const result = await workPeriodsService.delete(req.params.teamId, req.params.id);
+    const result = await workPeriodsService.deleteWorkPeriod(req.params.teamId, req.params.id);
     if (result.error)
       res.status(500).json(result).end();
   else
@@ -27,8 +27,15 @@ async function delete(req, res) {
   }
 }
 
+async function getAllForTeamBetween(req, res) {
+  const result = await workPeriodsService.getAllForTeamBetween(req.params.teamId,
+    new Date(req.query.from),
+    new Date(new Date().setDate(new Date(req.query.to).getDate() + 1))
+  );
+}
+
 async function getAllForUserBetween(req, res) {
-  const result = await workPeriodsService.getAllBetween(req.params.id, req.params.userId,
+  const result = await workPeriodsService.getAllBetween(req.params.teamId, req.params.userId,
     new Date(req.query.from),
     new Date(new Date().setDate(new Date(req.query.to).getDate() + 1))
   );
@@ -56,7 +63,8 @@ async function update(req, res) {
 
 module.exports = {
   create,
-  delete,
+  deleteWorkPeriod,
+  getAllForTeamBetween,
   getAllForUserBetween,
   update
 };

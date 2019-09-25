@@ -6,7 +6,7 @@ function create(teamId, userId, arrival, departure) {
   );
 }
 
-function delete(teamId, id) {
+function deleteWorkPeriod(teamId, id) {
   return shared.execute("DELETE FROM work_periods WHERE team_id = $1 AND id = $2",
     [teamId, id]
   );
@@ -36,7 +36,7 @@ function update(teamId, id, arrival, departure) {
 
 module.exports = {
   create,
-  delete,
+  deleteWorkPeriod,
   getAllForTeamBetween,
   getAllForUserBetween,
   update
