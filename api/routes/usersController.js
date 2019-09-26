@@ -20,11 +20,25 @@ async function getAllRoles(req, res) {
 }
 
 async function getUserById(req, res) {
-  const resultsFromService = await userService.getUserById(req.params.userId);
+  var resultsFromService = await userService.getUserById(req.params.userId);
   if (resultsFromService.error)
     res.status(500).json(resultsFromService).end();
-  else
-    res.json(resultsFromService.data[0]).end();
+  else {
+    resultsFromService = resultsFromService.data[0];
+    var result = await teamsService.getAllForUser(resultsFromService.id);
+    if (result.error)
+      res.status(500).json(result).end();
+    else {
+      resultsFromService.teams = result.data;
+      result = await workingTimesService.getLastFor(resultsFromService.id);
+      if (result.error)
+        res.status(500).json(result).end();
+      else {
+        resultsFromService.clocked_in = result.data.length > 0 && result.data[0].departure === undefined;
+        res.json(resultsFromService).end();
+      }
+    }
+  }
 }
 
 async function createUser(req, res) {
@@ -121,7 +135,7 @@ async function login(req, res) {
       res.status(500).json(result).end();
     else {
       resultsFromService.teams = result.data;
-      var result = await workingTimesService.getLastFor(resultsFromService.id);
+      result = await workingTimesService.getLastFor(resultsFromService.id);
       if (result.error)
         res.status(500).json(result).end();
       else {
