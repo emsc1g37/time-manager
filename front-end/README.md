@@ -1,4 +1,8 @@
-# front-end
+<<<<<<< HEAD
+# projet-final
+=======
+# tm-front-end
+>>>>>>> af6c6b0cc7cb5bd4d6e337d6669d7def9418a2e9
 
 ## Project setup
 ```

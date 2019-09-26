@@ -1,40 +1,60 @@
 <template>
-  <div id="app">
-     <User v-on:login="onLogin" v-on:logout="onLogout"></User>
+  <div>
+    <Navbar v-if="showMenu"/>
+    <Sidebar v-if="showMenu"/>
+
+    <!-- <b-container>
+    <router-view/>
+    </b-container> -->
+
+    
+    <router-view />
   </div>
 </template>
 
 <script>
-import User from './components/User.vue'
+import Sidebar from '@/components/Sidebar.vue'
+import Navbar from '@/components/Navbar.vue'
 
 export default {
-  name: 'app',
-  components: {
-    User
-  },
+  name:'app',
   data() {
     return {
-      email: "",
-      id: 0,
-      username: ""
+      mockAccount: {
+        username: "log",
+        password: "pass"
+      }
     }
   },
-  methods: {
-    onLogin(id, email, username) {
-      this.email = email
-      this.id = id
-      this.username = username
+  computed: {
+    showMenu() {
+    return this.$route.name !== 'login';
     },
-    onLogout(event) {
-      this.email = ""
-      this.id = 0
-      this.username = ""
-    }
+  },
+  components: {
+    Sidebar,Navbar
   }
 }
+
 </script>
 
 <style>
+#nav {
+  margin-left: 20%;
+}
+body {
+  margin-left: 20%;
+  background-color: #F0F0F0;
+}
+h1 {
+  padding: 0;
+  margin-top: 0;
+}
+#app {
+  width: 1024px;
+  margin: auto;
+}
+/*
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -43,4 +63,5 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
+*/
 </style>
