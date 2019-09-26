@@ -15,8 +15,7 @@ router.route("/users")
   .get(userController.getAllUsers)
   .post([
     check("email").isEmail(),
-    check("password").isLength({ min: 8, max: 25 }).custom(validation.passwordConfirmation),
-    check("confirm_password").exists(),
+    check("password").isLength({ min: 8, max: 25 }),
     check("first_name").isLength({ min: 2, max: 50 }),
     check("last_name").isLength({ min: 2, max: 50 })
   ], (req, res) => {

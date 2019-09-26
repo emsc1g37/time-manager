@@ -9,14 +9,6 @@ function hasErrors(req, res) {
   return false;
 }
 
-function passwordConfirmation(value, {req, loc, path}) {
-  if (value !== req.body.confirm_password)
-    throw new Error("Passwords don't match.");
-  else
-    return value;
-}
-
 module.exports = {
   hasErrors,
-  passwordConfirmation
 };
