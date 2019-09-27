@@ -5,7 +5,7 @@ const debug = require('debug')('logger:dbConfig'); // eslint-disable-line
 const pgURI = 'postgresql://postgres:root@localhost:5432/postgres'
 
 const client = new pgClient.Client({
-    connectionString: pgURI
+    connectionString: process.env.DATABASE_URL || pgURI
 });
 
 function pgConnect() {
