@@ -1,7 +1,10 @@
-FROM node:10
+FROM node:latest
+RUN npm install -g http-server
 RUN mkdir /frond-end
-ADD . /front-end
 WORKDIR /front-end
+COPY package*.json ./
 RUN npm install
+COPY . .
+RUN npm run build
 EXPOSE 80
-CMD ["npm", "run", "serve"]
+CMD ["http-server", "dist"]
