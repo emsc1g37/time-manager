@@ -33,7 +33,7 @@ Here is the format of the header you must include in your requests: `Authorizati
 | PUT | /users/:id | `{"email":"string","first_name":"string","last_name":"string"}` | | Update informations of the user referenced by `:id`. |
 | GET | /users/:id | | `{"id":"int","email":"string","first_name":"string","last_name":"string","role_id":"int","role_label":"string","teams":[{"id":"int","name":"string","manager_id":"string","manager_first_name":"string","manager_last_name":"string"},...],"clocked_in":"bool"}` | Get the user referenced by `:id`. |
 | DELETE | /user/:id | | | Delete the user identified by `:id`. |
-| PUT | /users/changePassword | `{"old_password":"string","password":"string","confirm_password":"string"}` | | Change the password of the current user. |
+| PUT | /users/changePassword | `{"old_password":"string","password":"string"}` | | Change the password of the current user. |
 | PUT | /clocks/ | | `{"user_id":"int","user_id":"int","arrival":"timestamp","departure":"timestamp"}` | Clocks in or out for the current user. |
 | GET | /users/:id/workingTimes/?from=yyyy-mm-dd&to=yyyy-mm-dd | | `[{"id":"int","user_id":"int","arrival":"string","departure":"string or null"},...]` | Get the working times of the user referenced by :id that are comprized between the from and to dates. |
 | GET | /roles/ | | `[{"id":"int","label":"string"},...]` | Get all the available roles. |
@@ -44,8 +44,8 @@ These routes can be accessed with a valid Manager JWT token. The format of the A
 
 | Method | Endpoint | Input data | Output data | Description |
 |--------|----------|------------|-------------|-------------|
-| POST | /teams/ | `{"name":"string"}` | `{"id":"int","name":"string","manager_id":"int","manager_first_name":"string","manager_last_name":"string"}` | Create a new team. |
-| GET | /teams/:id | | `{"id":"int","name":"string","manager_id":"int","manager_first_name":"string","manager_last_name":"string"}` | Get the team identified by `:id`. |
+| POST | /teams/ | `{"name":"string"}` | `{"id":"int","name":"string","manager_id":"int"}` | Create a new team. |
+| GET | /teams/:id | | `{"id":"int","name":"string","manager_id":"int","manager_first_name":"string","manager_last_name":"string","members":[{"id":"int","first_name":"string","last_name":"string","role_id":"int","role_label":"string"},...]}` | Get the team identified by `:id`. |
 | PUT | /teams/:id | `{"name":"string"}` | `{"id":"int","name":"string","manager_id":"int","manager_first_name":"string","manager_last_name":"string"}` | Update the team identified by `:id`. |
 | DELETE | /teams/:id | | | Delete the team identified by `:id`. |
 | POST | /teams/:id/add/:userId | | | Add the user referenced by `:userId` to the team identified by `:id`. |
