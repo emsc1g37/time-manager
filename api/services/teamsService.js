@@ -32,6 +32,15 @@ function getAllForUser(userId) {
   );
 }
 
+function getAllMembersFor(teamId) {
+  return shared.execute("SELECT u.id, u.email, u.first_name, u.last_name, u.role_id, r.label role_label FROM users u " +
+    "INNER JOIN roles r ON (u.role_id = r.id) " +
+    "INNER JOIN member_of m ON (u.id = m.user_id) " +
+    "WHERE m.team_id = $1",
+    [teamId]
+  );
+}
+
 function getAllManagedBy(managerId) {
   return shared.execute("SELECT * FROM teams WHERE manager_id = $1", [
     managerId

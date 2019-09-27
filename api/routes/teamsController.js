@@ -55,13 +55,20 @@ async function getAllManagedBy(req, res) {
 }
 
 async function getOne(req, res) {
-  const result = await teamsService.getOne(req.params.id);
+  const result = await teamsService.getOne(req.params.teamId);
   if (result.error)
     res.status(500).json(result).end();
   else if (result.data.length == 0)
     res.status(404).end()
-  else
-    res.json(result.data).end();
+  else {
+    const members = await teamsService.getAllMembers(req.params.teamId);
+    if (members.error)
+      res.status(500).json(members).end();
+    else {
+      result.data[0].members = members.data;
+      res.json(result.data[0]).end();
+    }
+  }
 }
 
 async function removeEmployee(req, res) {
