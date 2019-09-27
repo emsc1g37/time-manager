@@ -1,9 +1,9 @@
 const shared = require("./shared");
 
-function addEmployee(teamId, employeeId) {
+function addEmployee(teamId, userId) {
   return shared.execute(
-    "INSERT INTO member_of (team_id, employee_id) VALUES ($1, $2)",
-    [teamId, employeeId]
+    "INSERT INTO member_of (team_id, user_id) VALUES ($1, $2)",
+    [teamId, userId]
   );
 }
 
@@ -47,10 +47,10 @@ function getAllManagedBy(managerId) {
   ]);
 }
 
-function removeEmployee(teamId, employeeId) {
+function removeEmployee(teamId, userId) {
   return shared.execute(
-    "DELETE FROM member_of WHERE team_id = $1 AND employee_id = $2",
-    [teamId, employeeId]
+    "DELETE FROM member_of WHERE team_id = $1 AND user_id = $2",
+    [teamId, userId]
   );
 }
 
@@ -68,6 +68,7 @@ module.exports = {
   getOne,
   getAllForUser,
   getAllManagedBy,
+  getAllMembersFor,
   removeEmployee,
   update,
 };

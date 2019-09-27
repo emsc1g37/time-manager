@@ -35,8 +35,7 @@ router.route("/users/:userId")
   .delete(userController.deleteUser);
 router.put("/users/changePassword", [
   check("old_password").exists(),
-  check("password").isLength({ min: 8, max: 20 }).custom(validation.passwordConfirmation),
-  check("confirm_password").exists()
+  check("password").isLength({ min: 8, max: 20 })
 ], (req, res) => {
   if (!validation.hasErrors(req, res))
     userController.changePassword(req, res);
@@ -46,7 +45,7 @@ router.get("/roles", userController.getAllRoles);
 
 const teamsController = require("./teamsController");
 router.post("/teams", [
-  check("name").isLength({min: 1, max: 255 })
+  check("name").isLength({min: 1, max: 255 }),
 ], (req, res) => {
   if (!validation.hasErrors(req, res))
     teamsController.create(req, res);

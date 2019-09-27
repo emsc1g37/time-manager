@@ -2,11 +2,11 @@ const teamsService = require("../services/teamsService");
 
 async function addEmployee(req, res) {
   if (await ensureOwnership(req, res)) {
-    const result = await teamsService.addEmployee(req.params.id, req.params.userId);
+    const result = await teamsService.addEmployee(req.params.teamId, req.params.userId);
     if (result.error)
       res.status(500).json(result).end();
     else
-      res.status(200).end();
+      res.status(201).end();
   }
 }
 
@@ -21,7 +21,7 @@ async function create(req, res) {
       res.status(201).json({
         id: result.data[0].id,
         name: req.body.name,
-        managerId: req.user.id
+        manager_id: req.user.id
       }).end();
     }
   }
@@ -43,7 +43,7 @@ async function ensureOwnership(req, res) {
     res.status(500).json(result).end();
   else if (result.data.length == 0)
     res.status(404).end();
-  else if (result.data[0].managerId != req.user.id)
+  else if (result.data[0].manager_id != req.user.id)
     res.status(403).json({error: "You are not in charge of this team."}).end();
   else
     return true;
@@ -59,9 +59,9 @@ async function getOne(req, res) {
   if (result.error)
     res.status(500).json(result).end();
   else if (result.data.length == 0)
-    res.status(404).end()
+    res.status(404).end();
   else {
-    const members = await teamsService.getAllMembers(req.params.teamId);
+    const members = await teamsService.getAllMembersFor(req.params.teamId);
     if (members.error)
       res.status(500).json(members).end();
     else {
@@ -72,7 +72,13 @@ async function getOne(req, res) {
 }
 
 async function removeEmployee(req, res) {
-  await teamsService.removeEmployee(req.params.id, req.params.userId);
+  if (ensureOwnership(req, res)) {
+    const result = await teamsService.removeEmployee(req.params.teamId, req.params.userId);
+    if (result.error)
+      res.status(500).json(result).end();
+    else
+      res.status(200).end();
+  }
 }
 
 async function update(req, res) {
