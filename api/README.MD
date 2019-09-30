@@ -5,6 +5,9 @@
 - Install the dependencies with `npm install`
 - Launch the server with `npm start`
 
+## Project structure
+The entry point of the API is 
+
 ## API documentation
 
 To interract with the API, you must call appropriate URls also called endpoints. They all start with a base path: yourdomain/api. You then need to append the endpoint to get an usable URL.
