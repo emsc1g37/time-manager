@@ -10,8 +10,8 @@
 </template>
 
 <script>
-import Vue from 'vue';
-import axios from "axios";
+import UserServices from "@/services/UserServices"
+
 
     export default {
         name: 'Login',
@@ -25,18 +25,9 @@ import axios from "axios";
         },
         methods: {
             login() {
-                axios.post( 
-                    "http://localhost:3000/api/users/login",
-                    this.input,
-                    {"headers": {
-                            "content-type": "application/json",
-                            'Authorization': 'Bearer ' + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoibWFlbDJAbWFpbC5mciIsImlhdCI6MTU2ODgwMTk4MywiZXhwIjoxNTcwMDExNTgzfQ.KSkI214iIQYpFl_zC7G-W4ifkmRszHKyvC290MStlzs'
-                            } }).then(result => {
-                    if (result.data.token != undefined){
-                        Vue.prototype.$user.set({role:'employe'});
-                        this.$router.replace({name: "home"});
-                    }
-                })
+                UserServices.login(this.input).then( 
+                    this.$router.replace({name: "dashboard"})
+                )
             },
         },
     }

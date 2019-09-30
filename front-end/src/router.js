@@ -1,7 +1,6 @@
 import Vue from 'vue';
 // import Router from 'vue-router';
 import LoginComponent from './views/login.vue';
-import Home from './views/Home.vue';
 import Account_information from './views/Account_information.vue';
 import Dashboard from './views/Dashboard.vue';
 import Team_detail from './views/Team_detail.vue';
@@ -22,24 +21,6 @@ let opts = {
             path: "/login",
             name: "login",
             component: LoginComponent
-        },
-        {
-            path: '/home',
-            name: 'home',
-            component: Home,
-            meta: {
-                permissions: [
-                    {
-                    role: "guest",
-                    access: false,
-                    redirect: "login"
-                    },
-                    {
-                        role: "employe",
-                        access: true,
-                    }
-                ]
-            },
         },
         {
             path: '/account_information',

@@ -18,24 +18,19 @@ export default {
                         hiddenOnCollapse: true
                     },
                     {
-                        href: '/home',
-                        title: 'Home',
-                        icon: 'User-Secret'
-                    },
-                    {
                         href: '/dashboard',
                         title: 'Dashboard',
-                        icon: 'fas fa-user'
+                        icon: 'fas fa-chart-area'
                     },
                     {
                         href: '/team_detail',
                         title: 'Team detail',
-                        icon: 'fas fa-user'
+                        icon: 'fas fa-users'
                     },
                     {
                         href: '/account_information',
                         title: 'Account information',
-                        icon: 'fas fa-chart-area',
+                        icon: 'fas fa-user-cog',
                         child: [
                             {
                                 href: '/charts/sublink',

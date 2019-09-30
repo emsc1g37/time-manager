@@ -10,7 +10,7 @@
         
         <b-nav-item-dropdown right>
           <template v-slot:button-content>
-            <em>Username</em>
+            <em>{{first_name}} {{last_name}}</em>
           </template>
           <b-dropdown-item  to="/login" >Sign Out</b-dropdown-item>
         </b-nav-item-dropdown>
@@ -22,9 +22,16 @@
 </template>
 
 <script>
+import Vue from "vue"
 
 export default {
-  name: "Navbar",        
+  name: "Navbar",    
+  data() {
+    return {
+      first_name: Vue.prototype.$user.get().first_name,
+      last_name: Vue.prototype.$user.get().last_name,
+    } 
+  },    
 }
 
 

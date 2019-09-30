@@ -18,14 +18,6 @@ import Navbar from '@/components/Navbar.vue'
 
 export default {
   name:'app',
-  data() {
-    return {
-      mockAccount: {
-        username: "log",
-        password: "pass"
-      }
-    }
-  },
   computed: {
     showMenu() {
     return this.$route.name !== 'login';
@@ -39,11 +31,11 @@ export default {
 </script>
 
 <style>
-#nav {
-  margin-left: 20%;
+nav {
+  margin-left: 50%;
 }
 body {
-  margin-left: 20%;
+  margin-left: 30%;
   background-color: #F0F0F0;
 }
 h1 {
