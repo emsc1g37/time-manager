@@ -28,9 +28,9 @@ function createUser(email, password, firstName, lastName) {
   );
 }
 
-function updateUser(id, email, password, firstName, lastName) {
-  return shared.execute("UPDATE users SET email = $1, password = CRYPT($2, GEN_SALT()), first_name = $3, last_name = $4 WHERE id = $5",
-    [email, password, firstName, lastName, id]
+function updateUser(id, email, firstName, lastName) {
+  return shared.execute("UPDATE users SET email = $1, first_name = $2, last_name = $3 WHERE id = $4",
+    [email, firstName, lastName, id]
   );
 }
 

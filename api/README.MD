@@ -5,6 +5,9 @@
 - Install the dependencies with `npm install`
 - Launch the server with `npm start`
 
+## Project structure
+The entry point of the API is `index.js`. Its job is to import all required dependencies, setup the router and launch the application. The routes are declared inside `routes/api.js`, which dispatches work to the different controllers. Those controllers can also be found inside the `/routes` folder. Controllers contain the business logic of the application, that is, checking authorization, asking for data and sending them back to the user. They also propagate database errors. Finally, services are in charge of actually constructing database queries. They can be found in the `/services` directory, their only job is to encapsulate SQL requests.
+
 ## API documentation
 
 To interract with the API, you must call appropriate URls also called endpoints. They all start with a base path: yourdomain/api. You then need to append the endpoint to get an usable URL.

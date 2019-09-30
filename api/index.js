@@ -4,6 +4,7 @@ const postgres = require("./db/config");
 const expressJwt = require("express-jwt");
 const path = require("path");
 const pathToRegexp = require("path-to-regexp");
+const subdomain = require("express-subdomain");
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -27,7 +28,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/api", require("./routes/api"));
+app.use(subdomain("api.time-manager", require("./routes/api")));
 // ------ Start web server ------
 
 const port = process.env.PORT || 3000;
