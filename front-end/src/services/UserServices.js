@@ -43,24 +43,24 @@ export default {
                     Authorization: "Bearer " + Vue.prototype.$user.get().token,
                 }
             }).then(result => {
-                Vue.prototype.$user.set({
-                    members: result.data.members
-            });
+                return result.data.members
         });
         
     },
-    team_member(){
+     async team_member(){
         let list_members = [];
         let teams = Vue.prototype.$user.get().teams;
-
-        teams.forEach(element => {
-            this.getUsersTeam(element.id)
-            list_members.push(Vue.prototype.$user.get().members)
+        teams.forEach(async (element) => {
+            let members = await this.getUsersTeam(element.id)
+            list_members.push(members)
         });
         return list_members
     },
+
+
+
     change_information(input){
-        return axios.post( 
+        return axios.put( 
             "http://localhost:3000/api/users/"+ Vue.prototype.$user.get().id,
             input,
             {"headers": {

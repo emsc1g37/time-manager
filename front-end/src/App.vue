@@ -31,9 +31,7 @@ export default {
 </script>
 
 <style>
-nav {
-  margin-left: 50%;
-}
+
 body {
   margin-left: 30%;
   background-color: #F0F0F0;

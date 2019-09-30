@@ -4,7 +4,6 @@
         <input class="account_information" type="text" name="first_name" v-model="input.first_name" placeholder="first name" />
         <input class="account_information" type="text" name="last_name" v-model="input.last_name" placeholder="last name" />
         <input class="account_information" type="text" name="email" v-model="input.email" placeholder="email" />
-        <input class="account_information" type="password" name="password" v-model="input.password" placeholder="Password" />
        
         <button class="account_information" type="button" v-on:click="change_information()">send</button>
 
@@ -20,10 +19,9 @@ export default {
     data() {
         return {
             input: {
+                email: null,
                 first_name: null,
                 last_name: null,
-                email: null,
-                password: null,
             }
         }
     },
