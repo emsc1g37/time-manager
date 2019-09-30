@@ -13,6 +13,7 @@ export default {
             if (result.data.token != undefined){
                 Vue.prototype.$user.set({
                     id: result.data.id,
+                    email: result.data.email,
                     role:'employe',
                     token: result.data.token,
                     first_name: result.data.first_name,
@@ -20,10 +21,9 @@ export default {
                     teams: result.data.teams,
                 });            
             }
-        })
-        // .catch(e => {
-        //     console.log(e);
-        // });
+        }).catch(e => {
+            console.log(e);
+        });
     },
     logOut(){
         return Vue.prototype.$user.set({role:'guest'})
@@ -62,6 +62,18 @@ export default {
     change_information(input){
         return axios.put( 
             "http://localhost:3000/api/users/"+ Vue.prototype.$user.get().id,
+            input,
+            {"headers": {
+                    "content-type": "application/json",
+                    Authorization: "Bearer " + Vue.prototype.$user.get().token,
+                    } })
+        // .catch(e => {
+        //     console.log(e);
+        // });
+    },
+    change_password(input){
+        return axios.put( 
+            "http://localhost:3000/api/users/changePassword",
             input,
             {"headers": {
                     "content-type": "application/json",

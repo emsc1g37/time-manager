@@ -2,15 +2,16 @@
 
 <template>
 <div>
-    <div class="table" v-for="(team, index) in data.teams"  v-bind:key="team.id" >
+    <div class="table" v-for="team in data.teams"  v-bind:key="team.id" >
         <h2> {{team.name}} </h2>
 
         <h5> managed by {{team.manager_first_name}} {{team.manager_last_name}} </h5> 
         
         <mdb-datatable
-            :data="data.table_list[index]"
+            :data="data"
             striped
             bordered
+            class="datatable"
         />
 
 
@@ -73,16 +74,24 @@ export default {
                 rows: element
             })
         },
-        // console.log(this.table_list)
-        )
+        ).catch(e => {
+            
+        });
     }
 }
 </script>
 
 <style>
-.table{
-    margin-left: 10%
-    
+
+.datatable
+    {
+    width: 50%;
+    margin: 30px;
+    justify-content: flex-start;
+    }
+
+h2,h5{
+    margin-left: 20%
 }
 
 </style>

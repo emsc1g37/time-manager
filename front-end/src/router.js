@@ -4,6 +4,7 @@ import LoginComponent from './views/login.vue';
 import Account_information from './views/Account_information.vue';
 import Dashboard from './views/Dashboard.vue';
 import Team_detail from './views/Team_detail.vue';
+import Password from './views/Password.vue';
 
 import VueRouter from 'vue-router';
 
@@ -54,6 +55,20 @@ let opts = {
             path: '/team_detail',
             name: 'team_detail',
             component: Team_detail,
+            meta: {
+                permissions: [
+                    {
+                    role: "guest",
+                    access: false,
+                    redirect: "login"
+                    }
+                ]
+            },
+        },
+        {
+            path: '/password',
+            name: 'password',
+            component: Password,
             meta: {
                 permissions: [
                     {

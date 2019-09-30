@@ -33,8 +33,8 @@ export default {
                         icon: 'fas fa-user-cog',
                         child: [
                             {
-                                href: '/charts/sublink',
-                                title: 'Sub Link'
+                                href: '/password',
+                                title: 'change password'
                             }
                         ]
                     }
